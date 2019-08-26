@@ -121,9 +121,13 @@ SolElev_rad <- function(
   ## Set argument \code{isCorrectSolartime} to FALSE to use the given
   ## local winter time instead.
   #
-  if (isCorrectSolartime & any(!is.finite(c(longDeg, timeZone)))) stop(
-    "if isCorrectSolartime, one needs to provide finite longDeg and timeZone")
-  # Fractional year in radians
+  ## this can throw an error when the length of longDeg and timZone differs 
+  # if (isCorrectSolartime & any(!is.finite(c(longDeg, timeZone)))) stop(
+  #   "if isCorrectSolartime, one needs to provide finite longDeg and timeZone")
+  # if (isCorrectSolartime & (any(!is.finite(longDeg)) | any(!is.finite(timeZone))) ) stop(
+  #   "if isCorrectSolartime, one needs to provide finite longDeg and timeZone")
+  
+      # Fractional year in radians
   fracYearInRad <- 2 * pi * (doy - 1) / 365.24
   # Solar time, corrected for local time and equation of time
   solarTimeHour <- if (!isCorrectSolartime ) hour else {
