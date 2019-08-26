@@ -24,6 +24,26 @@
 #' @version 0.22 2019-08-22 prepare documentation for package
 #'
 # https://stackoverflow.com/questions/15932585/multiple-functions-in-one-rd-file
+
+#' @examples
+#' data(LIN2006)
+#' # apply regression per month and with different windows
+#' (rqmw = LIN2006[ , calc_ClearSky_QuantileRegression_MonthlyTimeWindow(Date,Time,IncomingShortwave, tau = 0.85, lat = 52.21, lon = 14.122, hourshift = 0.5,timeZone = 0)])
+#'
+#' plot(IncomingShortwavePotential ~ month, data = rqmw, type = "l", col = 4, ylab = "Shortwave Radiation (W/m2)", ylim = c(0,500))
+#' lines(IncomingShortwaveClearSky ~ month, data = rqmw, type = "l", col =2)
+#' lines(IncomingShortwave ~ month, data = rqmw, type = "b")
+#' legend("topright", c("Potential", "Clear Sky flux", "Observed at surface"), col = c(4,2,1), lty = 1)
+#'
+#' # calculate potential surface solar radiation
+#'
+#' LIN2006[ , IncomingShortwavePotential := calc_PotRadiation_CosineResponsePower(doy = yday(Date),hour = Time/3600 + 0.5, latDeg = 52.21, longDeg = 14.122, timeZone = 0) ]
+#' LIN2006
+#' #plot(IncomingShortwave ~ IncomingShortwavePotential, data = LIN2006[month(Date) == 6 &  mday(Date) == 7, ], type = "l")
+#'
+#' plot(IncomingShortwave ~ IncomingShortwavePotential, data = LIN2006[month(Date) == 6, ], type = "p")
+#'
+
 NULL
 
 ##### core function ---------------------------
@@ -61,7 +81,7 @@ calc_ClearSky_QuantileRegression = function(IncomingShortwave, IncomingShortwave
 # dt30[ SiteCode == "ASP" & year(Date) == 2012 & month(Date) == 7 , mlm.output.statlong.call.rq("IncomingShortwave ~ Rsdpot_12",
 #                                                                                               data = .SD, tau = seq(0.7,0.99,0.1)), by = list(SiteCode)]
 
-
+### main function
 calc_ClearSky_QuantileRegression_MonthlyTimeWindow = function(Date, Time, IncomingShortwave,
                                                        IncomingShortwavePotential = NULL, tau = 0.85, lat = NULL, lon = NULL, hourshift = 0.25, timeZone = 0, isCorrectSolartime = TRUE, cosineResponsePower = 1.2,
                                                        pdev = 0.25,
@@ -102,7 +122,17 @@ calc_ClearSky_QuantileRegression_MonthlyTimeWindow = function(Date, Time, Incomi
   #'       \url{https://doi.org/10.1029/2019EA000686}
   #'
   #' @author Maik Renner, mrenner [at] bgc-jena.mpg.de
+  #' @examples
+  #' data(LIN2006)
+  #' # apply regression per month and with different windows
+  #' # Check available cores to parallize the task with setting mc.cores larger than 1
+  #' detectCores()
+  #' (rqmw = LIN2006[ , calc_ClearSky_QuantileRegression_MonthlyTimeWindow(Date,Time,IncomingShortwave, tau = 0.85, lat = 52.21, lon = 14.122, hourshift = 0.5,timeZone = 0, mc.cores = 1)])
   #'
+  #' plot(IncomingShortwavePotential ~ month, data = rqmw, type = "l", col = 4, ylab = "Shortwave Radiation (W/m2)", ylim = c(0,500))
+  #' lines(IncomingShortwaveClearSky ~ month, data = rqmw, type = "l", col =2)
+  #' lines(IncomingShortwave ~ month, data = rqmw, type = "b")
+  #' legend("topright", c("Potential", "Clear Sky flux", "Observed at surface"), col = c(4,2,1), lty = 1)
   #'
   #'
 {
@@ -122,7 +152,7 @@ calc_ClearSky_QuantileRegression_MonthlyTimeWindow = function(Date, Time, Incomi
   rqall = dth[ , calc_ClearSky_QuantileRegression(IncomingShortwave,IncomingShortwavePotential,tau)][ , Window := "all"]
 
   ## for each month
-  rqmon = dth[ , calc_ClearSky_QuantileRegression(IncomingShortwave,IncomingShortwavePotential,tau), by = list(year(Date), month(Date))] [ , Window := "1mon"]
+  rqmon = dth[ , calc_ClearSky_QuantileRegression(IncomingShortwave,IncomingShortwavePotential,tau), by = list(year(Date), month(Date))][ , Window := "1mon"]
 
 
   # dth = dt30[SiteCode == "LIN" & year(Date) == 1997 , .(Date,Time,IncomingShortwave, IncomingShortwavePotential = PotRadiation_CosineResponsePower(doy = yday(Date),
@@ -134,7 +164,7 @@ calc_ClearSky_QuantileRegression_MonthlyTimeWindow = function(Date, Time, Incomi
   #
   dth[ , yrmon := paste(year(Date), month(Date), sep = "_") ]
   setkey(dth,yrmon)
-  dth
+#  dth
   # x = "1997_1"
     system.time(
     results3mon <- mclapply( unique(dth[[ "yrmon"]]),
@@ -153,7 +183,6 @@ calc_ClearSky_QuantileRegression_MonthlyTimeWindow = function(Date, Time, Incomi
                                if (nrow(out)< 2) {
                                  out = data.table()#SiteCode = sid, statistic = NA, value = NA, year,month)
                                }
-                               print(out)
                                return(out)
                              }, mc.cores = mc.cores)
   )
@@ -175,7 +204,6 @@ calc_ClearSky_QuantileRegression_MonthlyTimeWindow = function(Date, Time, Incomi
                              if (nrow(out)< 2) {
                                out = data.table()#SiteCode = sid, statistic = NA, value = NA, year,month)
                              }
-                             print(out)
                              return(out)
                            }, mc.cores = mc.cores)
   rq5mon = rbindlist(results5mon,fill = TRUE)[ , Window := "5mon"]
@@ -196,7 +224,6 @@ results7mon <- mclapply( unique(dth[[ "yrmon"]]),
                            if (nrow(out)< 2) {
                              out = data.table()#SiteCode = sid, statistic = NA, value = NA, year,month)
                            }
-                           print(out)
                            return(out)
                          }, mc.cores = mc.cores)
 rq7mon = rbindlist(results7mon,fill = TRUE)[ , Window := "7mon"]
@@ -247,14 +274,14 @@ aggregate2yrmon = function(dth = NULL, Date = NULL, Time = NULL, IncomingShortwa
   #' The aggregation tries to avoid sampling biases (e.g. missing data at night time)
   #' with 26 days required and then average the monthly mean diurnal cycle
   #'
-  #'      @param dth a data.table with column names Date, Time; if not supplied it will be constructed from vectors
-  #'      @param Date a vector of Dates in the format of data.table::as.IDate
-  #'      @param Time a vector of Times in the format of data.table::as.ITime
-  #'      @param IncomingShortwave a vector of subdaily (hourly or half-hourly) observations of solar radiation
-  #'      @param nminmon numeric, sets the required number of existing days for averaging
-  #'      @param ... further vectors which shall be aggregated
-  #'      @return data.table with aggregated data per year and month
-  #'      @details Provide either a data table dth or vectors of Date, Time, IncomingShortwave
+  #' @param dth a data.table with column names Date, Time; if not supplied it will be constructed from vectors
+  #' @param Date a vector of Dates in the format of data.table::as.IDate
+  #' @param Time a vector of Times in the format of data.table::as.ITime
+  #' @param IncomingShortwave a vector of subdaily (hourly or half-hourly) observations of solar radiation
+  #' @param nminmon numeric, sets the required number of existing days for averaging
+  #' @param ... further vectors which shall be aggregated
+  #' @return data.table with aggregated data per year and month
+  #' @details Provide either a data table dth or vectors of Date, Time, IncomingShortwave
   #' @author Maik Renner, mrenner [at] bgc-jena.mpg.de
   #'
   if (is.null(dth)) dth = data.table(Date,Time,IncomingShortwave, ...)

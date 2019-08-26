@@ -7,19 +7,28 @@
 aggregate2yrmon(dth = NULL, Date = NULL, Time = NULL,
   IncomingShortwave = NULL, ..., nminmon = 26)
 }
+\arguments{
+\item{dth}{a data.table with column names Date, Time; if not supplied it will be constructed from vectors}
+
+\item{Date}{a vector of Dates in the format of data.table::as.IDate}
+
+\item{Time}{a vector of Times in the format of data.table::as.ITime}
+
+\item{IncomingShortwave}{a vector of subdaily (hourly or half-hourly) observations of solar radiation}
+
+\item{...}{further vectors which shall be aggregated}
+
+\item{nminmon}{numeric, sets the required number of existing days for averaging}
+}
+\value{
+data.table with aggregated data per year and month
+}
 \description{
 The aggregation tries to avoid sampling biases (e.g. missing data at night time)
 with 26 days required and then average the monthly mean diurnal cycle
 }
 \details{
-@param dth a data.table with column names Date, Time; if not supplied it will be constructed from vectors
-     @param Date a vector of Dates in the format of data.table::as.IDate
-     @param Time a vector of Times in the format of data.table::as.ITime
-     @param IncomingShortwave a vector of subdaily (hourly or half-hourly) observations of solar radiation
-     @param nminmon numeric, sets the required number of existing days for averaging
-     @param ... further vectors which shall be aggregated
-     @return data.table with aggregated data per year and month
-     @details Provide either a data table dth or vectors of Date, Time, IncomingShortwave
+Provide either a data table dth or vectors of Date, Time, IncomingShortwave
 }
 \author{
 Maik Renner, mrenner [at] bgc-jena.mpg.de

@@ -30,6 +30,7 @@ calc_PotRadiation_CosineResponsePower <- function(doy,
   #' Since their arguments where changing I copied part of these packages.
   #'
   #' @references Long and Ackerman 2000 JGR
+  #' Renner et al., 2019 ESS
   #' @author Maik Renner, mrenner [at] bgc-jena.mpg.de
   #' @param doy value or vector of day of year
   #' @param hour value or vector of hour of day also with decimal fraction
@@ -38,6 +39,14 @@ calc_PotRadiation_CosineResponsePower <- function(doy,
   #' @param timeZone numeric, if local time is used then 0 otherwise the time must be adapted
   #' @param cosineResponsePower numeric defaults to 1.2, may be lower at high latitude sites, see Long and Ackerman 2000
   #' @return vector of potential solar radiation at the surface
+  #' @examples
+  #' data(LIN2006)
+  #' # calculate potential surface solar radiation
+  #' LIN2006[ , IncomingShortwavePotential := calc_PotRadiation_CosineResponsePower(doy = yday(Date),hour = Time/3600 + 0.5, latDeg = 52.21, longDeg = 14.122, timeZone = 0) ]
+  #' LIN2006
+  #' #plot(IncomingShortwave ~ IncomingShortwavePotential, data = LIN2006[month(Date) == 6 &  mday(Date) == 7, ], type = "l")
+  #'
+  #' plot(IncomingShortwave ~ IncomingShortwavePotential, data = LIN2006[month(Date) == 6, ], type = "p")
 
 
     # SolElev_rad.V.n <- fCalcSunPosition(DoY.V.n, Hour.V.n, Lat_deg.n,
