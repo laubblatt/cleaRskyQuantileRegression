@@ -1,0 +1,28 @@
+Package: cleaRskyQuantileRegression
+Type: Package
+Title: Calculate monthly fractional clear-sky shortwave transmission from global radiation records
+Version: 0.1.0
+Author: Maik Renner
+Maintainer: Maik Renner <mrenner@bgc-jena.mpg.de>
+Description: This package provides the functions to calculate 
+    the fractional clear-sky shortwave transmission and
+    shortwave clear-sky fluxes at the surface
+    using (half-)hourly global radiation records. 
+    The method is validated and described in 
+    Renner, M., M. Wild, M. Schwarz, and A. Kleidon.
+    "Estimating Shortwave Clear-Sky Fluxes from Hourly Global
+    Radiation Records by Quantile Regression."
+    Earth and Space Science, 2019.
+    https://doi.org/10.1029/2019EA000686. 
+License: GPL (>= 2) 
+Encoding: UTF-8
+LazyData: true
+Imports: data.table,
+         quantreg,
+         parallel,
+         lubridate,
+Depends: data.table,
+         quantreg,
+         parallel,
+         lubridate,
+RoxygenNote: 6.1.1
