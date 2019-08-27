@@ -257,7 +257,7 @@ rq7mon = rbindlist(results7mon,fill = TRUE)[ , Window := "7mon"]
   dtyrmon[ , IncomingShortwaveClearSky :=   ftau * IncomingShortwavePotential][]
 
   if (briefoutput == TRUE) {
-    dtyrmon = dtyrmon[ , .(year,month,IncomingShortwave,IncomingShortwavePotential,ftau,IncomingShortwaveClearSky,Window,tau)]
+    dtyrmon = dtyrmon[!is.an(Window) , .(year,month,IncomingShortwave,IncomingShortwavePotential,ftau,IncomingShortwaveClearSky,Window,tau)]
   }
   return(dtyrmon)
 }
