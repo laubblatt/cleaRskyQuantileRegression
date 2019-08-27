@@ -28,3 +28,35 @@ library(devtools)
 install_github("laubblatt/cleaRskyQuantileRegression")
  ```
 
+## Working Example for clear sky fluxes
+Load a dataset of hourly solar radiation from the site Lindenberg, Germany for the year 2006
+
+```R
+library(cleaRskyQuantileRegression)
+data(LIN2006)
+ ```
+
+### Now perform regression per month 
+```R
+(rqmw = LIN2006[ , calc_ClearSky_QuantileRegression_MonthlyTimeWindow(Date,Time,IncomingShortwave, tau = 0.85, lat = 52.21, lon = 14.122, hourshift = 0.5,timeZone = 0)])
+ ```
+
+The result is a monthly data table of fractional shortwave transmission (ftau), the resulting mean flux of shortwave radiation without clouds (IncomingShortwaveClearSky) and the length of the sampling period (Window) which was derived internally by the goodness of fit (R1) and deviations of the monthly ftau from the site mean ftau. 
+Resulting fluxes can be plotted:
+```R
+plot(IncomingShortwavePotential ~ month, data = rqmw, type = "l", col = 4, ylab = "Shortwave Radiation (W/m2)", ylim = c(0,500))
+lines(IncomingShortwaveClearSky ~ month, data = rqmw, type = "l", col =2)
+lines(IncomingShortwave ~ month, data = rqmw, type = "b")
+legend("topright", c("Potential", "Clear Sky flux", "Observed at surface"), col = c(4,2,1), lty = 1)
+ ```
+
+
+### Working example to calculate potential surface solar radiation
+
+```R
+LIN2006[ , IncomingShortwavePotential := calc_PotRadiation_CosineResponsePower(doy = yday(Date),hour = Time/3600 + 0.5, latDeg = 52.21, longDeg = 14.122, timeZone = 0) ]
+LIN2006
+#plot(IncomingShortwave ~ IncomingShortwavePotential, data = LIN2006[month(Date) == 6 &  mday(Date) == 7, ], type = "l")
+plot(IncomingShortwave ~ IncomingShortwavePotential, data = LIN2006[month(Date) == 6, ], type = "p")
+```
+

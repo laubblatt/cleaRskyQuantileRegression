@@ -25,3 +25,13 @@
 #
 #
 
+### check if the error can be reproduced
+# dt60
+#
+# system.time(
+#   qryrmon <- dt30[ , calc_ClearSky_QuantileRegression_MonthlyTimeWindow(Date = Date,
+#                                                                         Time = Time, IncomingShortwave = IncomingShortwave,
+#                                                                         IncomingShortwavePotential = Rsdpot_12,
+#                                                                         mc.cores = 10,tau = 0.85, pdev = 0.25), by = SiteCode]
+# )
+
