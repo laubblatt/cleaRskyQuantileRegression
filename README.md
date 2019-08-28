@@ -72,7 +72,14 @@ xyplot(IncomingShortwave ~  Rsdpot_12, data = dat,
          panel.text(700,-20, "half hourly data of one month", fontfamily = "Helvetica")
        },
        grid = TRUE)
-```R
+```
+
+![Illustration of Quantile Regression approach. The scatterplot shows a monthly sample
+127 of 30min observations of incoming shortwave radiation versus the corresponding potential
+128 shortwave radiation (Lindenberg, Germany, August 2003). The scatter forms a well-defined
+129 orthogonal triangle with clear-sky conditions close to the upper boundary. The quantile
+130 regression method (Koenker, 2005 ) allows to estimate this upper slope for a given quantile
+131 here 85%).](doc/fig01.png)
 
 
 
