@@ -15,6 +15,9 @@
 #' @version 0.1 2018-11-23
 #' @version 0.2 2019-08-20 update arguments and remove dependency of REddyProc
 #' @export calc_PotRadiation_CosineResponsePower
+#' @export utils_eccentricitycorrectionfactor
+#'
+#' @export SolElev_rad
 #
 NULL
 
@@ -92,6 +95,23 @@ fCalcExtRadiation <- function(
   ##value<<
   ## Data vector of extraterrestrial radiation (ExtRad, W_m-2)
 }
+
+
+utils_eccentricitycorrectionfactor = function (doy) {
+  #' Calculate the Eccentricity Correction Factor using Iqbal 1983, eq. 1.2.1
+  #'
+  #' back quoted to Spencer (1971)
+  #' Function adapted from REddyProc::fCalcExtRadiation
+  #' @param doy vector of day of year
+  #'
+  FracYear_rad.V.n <- 2 * pi * (doy - 1)/365.24
+  ECF <- (1.00011 + 0.034221 * cos(FracYear_rad.V.n) + 0.00128 * sin(FracYear_rad.V.n) +
+            0.000719 * cos(2 * FracYear_rad.V.n) + 7.7e-05 * sin(2 * FracYear_rad.V.n))
+  attr(ECF, "varnames") <- "EccentricityCorrectionFactor"
+  attr(ECF, "units") <- ""
+  ECF
+}
+
 
 
 SolElev_rad <- function(
