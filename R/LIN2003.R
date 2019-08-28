@@ -4,10 +4,14 @@
 #'
 #' @docType data
 #'
-#' @usage data(cleaRskyQuantileRegression)
+#' @usage data(LIN2003)
 #'
 #' @keywords datasets
 #'
+#'
+
+#' @format Data table, with Date, Time and Incoming shortwave radiation in W/m2.
+
 #' @source \href{https://bsrn.awi.de}
 #'
 #' @examples
@@ -22,4 +26,4 @@
 # # Plot for one month
 # plot(IncomingShortwave ~  Rsdpot_12, data = dat,
 #      xlab = expression(bold("Potential Shortwave Radiation ")(W*m^-2)), ylab = expression(bold("Observed Shortwave Radiation ")(W*m^-2)) )
-
+  "LIN2003"

@@ -240,7 +240,7 @@ rq7mon = rbindlist(results7mon,fill = TRUE)[ , Window := "7mon"]
   dtyrmon[ , IncomingShortwaveClearSky :=   ftau * IncomingShortwavePotential][]
 
   if (briefoutput == TRUE) {
-    dtyrmon = dtyrmon[!is.an(Window) , .(year,month,IncomingShortwave,IncomingShortwavePotential,ftau,IncomingShortwaveClearSky,Window,tau)]
+    dtyrmon = dtyrmon[!is.na(Window) , .(year,month,IncomingShortwave,IncomingShortwavePotential,ftau,IncomingShortwaveClearSky,Window,tau)]
   }
   return(dtyrmon)
 }
@@ -274,6 +274,38 @@ aggregate2yrmon = function(dth = NULL, Date = NULL, Time = NULL, IncomingShortwa
 }
 
 # dt30[SiteCode == "LIN" & year(Date) == 1997 , Aggregate2yrmon(dth = NULL, Date,Time,IncomingShortwave,IncomingLongwave)]
+
+
+#' #' @export
+#' meann <- function(x,nmin,...) {
+#'   #' an average mean which requires a minimum of data points nmin
+#'
+#'   #'  needed if missing data is missing :)
+#'   #' @param x vector of numeric values
+#'   #' @param nmin minimum of data points accepted to calculate the mean (integer)
+#'   #' @param ... further arguments to mean() remember especially to set na.rm=TRUE
+#'   #' @version 20141208 add non-missing data lower nmin
+#'   #' @author Maik Renner mrenner [at] bgc-jena.mpg.de
+#'   #' @examples
+#'   #' x = 1:10
+#'   #' meann(x,nmin = 11)
+#'   #' meann(NULL,nmin = 11)
+#'   #' x = c(1,2,NA,Inf,NaN)
+#'   #' meann(x,2,na.rm=TRUE)
+#'   #' x = c(1,2,NA,NA,NaN)
+#'   #' meann(x,2,na.rm=TRUE)
+#'   #' meann(x,3,na.rm=TRUE)
+#'   #' sum(!is.na(x))
+#'
+#'   # http://stackoverflow.com/questions/12125364/why-does-median-trip-up-data-table-integer-versus-double
+#'
+#'   n = length(x)
+#'   nnona = sum(!is.na(x))
+#'   if (n < nmin | nnona < nmin) out = NA
+#'   else out = mean(x,...)
+#'   return(as.double(out))  ### data.table needs consitent output ... for data allocation
+#' }
+
 
 
 calc_ClearSkyQuantileRegressionMonthly = function(Date, Time, IncomingShortwave, IncomingShortwavePotential = NULL, tau = tau,

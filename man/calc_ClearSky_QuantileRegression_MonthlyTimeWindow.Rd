@@ -55,11 +55,11 @@ This function may also compute the potential solar radiation when this is not gi
 To speed up the calculations the parallel package is used. This will not work under Windows, unless mc.cores = 1.
 }
 \examples{
-data(LIN2006)
+data(LIN2003)
 # apply regression per month and with different windows
 # Check available cores to parallize the task with setting mc.cores larger than 1
 detectCores()
-(rqmw = LIN2006[ , calc_ClearSky_QuantileRegression_MonthlyTimeWindow(Date,Time,IncomingShortwave, tau = 0.85, lat = 52.21, lon = 14.122, hourshift = 0.5,timeZone = 0, mc.cores = 1)])
+(rqmw = LIN2003[ , calc_ClearSky_QuantileRegression_MonthlyTimeWindow(Date,Time,IncomingShortwave, tau = 0.85, lat = 52.21, lon = 14.122, hourshift = 0.5,timeZone = 0, mc.cores = 1)])
 
 plot(IncomingShortwavePotential ~ month, data = rqmw, type = "l", col = 4, ylab = "Shortwave Radiation (W/m2)", ylim = c(0,500))
 lines(IncomingShortwaveClearSky ~ month, data = rqmw, type = "l", col =2)

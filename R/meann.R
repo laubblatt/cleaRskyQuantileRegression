@@ -1,9 +1,10 @@
-
+#' functions to calculate the average when a defined number of data points is available
+#'
 #' @export meann
 #'
 NULL
 
-meann = function(x,nmin,...) {
+meann <- function(x,nmin,...) {
   #' an average mean which requires a minimum of data points nmin
 
   #'  needed if missing data is missing :)
