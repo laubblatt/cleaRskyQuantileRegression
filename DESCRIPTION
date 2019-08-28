@@ -1,7 +1,7 @@
 Package: cleaRskyQuantileRegression
 Type: Package
 Title: Calculate monthly fractional clear-sky shortwave transmission from global radiation records
-Version: 0.1.0
+Version: 0.1.1
 Author: Maik Renner
 Maintainer: Maik Renner <mrenner@bgc-jena.mpg.de>
 Description: This package provides the functions to calculate 
