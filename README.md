@@ -74,17 +74,17 @@ xyplot(IncomingShortwave ~  Rsdpot_12, data = dat,
        grid = TRUE)
 ```
 
-![Illustration of Quantile Regression approach. The scatterplot shows a monthly sample
-127 of 30min observations of incoming shortwave radiation versus the corresponding potential
-128 shortwave radiation (Lindenberg, Germany, August 2003). The scatter forms a well-defined
-129 orthogonal triangle with clear-sky conditions close to the upper boundary. The quantile
-130 regression method (Koenker, 2005 ) allows to estimate this upper slope for a given quantile
-131 here 85%).](doc/fig01.png)
+| ![Fig 1.png](doc/fig01.png) | 
+|:--:| 
+| *Illustration of Quantile Regression approach. The scatterplot shows a monthly sample
+ of 30min observations of incoming shortwave radiation versus the corresponding potential
+ shortwave radiation (Lindenberg, Germany, August 2003). The scatter forms a well-defined
+ orthogonal triangle with clear-sky conditions close to the upper boundary. The quantile
+ regression method (Koenker, 2005 ) allows to estimate this upper slope for a given quantile
+here 85%. This slope represents the fractional transmission of shortwave radiation under clear-sky conditions of that month.* |
 
 
-
-
-## Perform regression for all month 
+## Perform regression for all months  
 ```R
 (rqmw = LIN2003[ , calc_ClearSky_QuantileRegression_MonthlyTimeWindow(Date,Time,IncomingShortwave, tau = 0.85, lat = 52.21, lon = 14.122, hourshift = 0.5,timeZone = 0)])
  ```
