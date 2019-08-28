@@ -9,9 +9,9 @@ This package provides the functions to calculate
     using (half-)hourly global radiation records. 
     The method is validated and described in 
     
-    Renner, M., M. Wild, M. Schwarz, and A. Kleidon.
-    **_Estimating Shortwave Clear-Sky Fluxes from Hourly Global
-    Radiation Records by Quantile Regression._**
+Renner, M., M. Wild, M. Schwarz, and A. Kleidon.
+    **Estimating Shortwave Clear-Sky Fluxes from Hourly Global
+    Radiation Records by Quantile Regression.**
     Earth and Space Science, 2019.
     https://doi.org/10.1029/2019EA000686. 
     
@@ -19,7 +19,7 @@ Main functionality is to perform a Quantile Regression on data of observed globa
 The derived fractional transmission of clear-sky solar radiation can be used to calculate the corresponding clear sky fluxes and the shortwave cloud radiative effect. 
 The method is intended for observational sites where no data on diffuse and direct radiation is available. The method only requires global radiation in hourly or half-hourly resolution. 
 
-The package also provide functions to calculate the potential shortwave radiation at the surface, i.e without any clouds and aerosols. Therefore Location (lat,lon) and Date and Time are required. The function is based on an code of the oR packages REddyProc and solartime maintained by Thomas Wutzler (MPI-BGC)
+The package also provide functions to calculate the potential shortwave radiation at the surface, i.e without any clouds and aerosols. Therefore Location (lat,lon) and Date and Time are required. The function is based on an code of the *R* packages REddyProc and solartime maintained by Thomas Wutzler (MPI-BGC)
 
 
 ## Instructions    
@@ -76,12 +76,7 @@ xyplot(IncomingShortwave ~  Rsdpot_12, data = dat,
 
 | ![Fig 1.png](doc/fig01.png) | 
 |:--:| 
-| *Illustration of Quantile Regression approach. The scatterplot shows a monthly sample
- of 30min observations of incoming shortwave radiation versus the corresponding potential
- shortwave radiation (Lindenberg, Germany, August 2003). The scatter forms a well-defined
- orthogonal triangle with clear-sky conditions close to the upper boundary. The quantile
- regression method (Koenker, 2005 ) allows to estimate this upper slope for a given quantile
-here 85%. This slope represents the fractional transmission of shortwave radiation under clear-sky conditions of that month.* |
+| *Illustration of Quantile Regression approach. The scatterplot shows a monthly sample  of 30min observations of incoming shortwave radiation versus the corresponding potential  shortwave radiation (Lindenberg, Germany, August 2003). The scatter forms a well-defined orthogonal triangle with clear-sky conditions close to the upper boundary. The quantile  regression method (Koenker, 2005 ) allows to estimate this upper slope for a given quantile here 85%. This slope represents the fractional transmission of shortwave radiation under clear-sky conditions of that month.* |
 
 
 ## Perform regression for all months  
