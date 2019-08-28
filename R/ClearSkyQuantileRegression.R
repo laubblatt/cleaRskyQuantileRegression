@@ -1,6 +1,6 @@
 
 #' @filename ClearSkyQuantileRegression.R
-#' @host gitbgc/ClearSky/R/
+#' @host gitbgc/clearskyqunatileregression/R/
 #' @author Maik Renner, mrenner [at] bgc-jena.mpg.de
 
 # require(quantreg)
