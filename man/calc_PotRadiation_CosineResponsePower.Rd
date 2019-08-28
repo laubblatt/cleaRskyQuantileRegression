@@ -32,13 +32,11 @@ REddyProc::fCalcPotRadiation and solartime.
 Since their arguments where changing I copied part of these packages.
 }
 \examples{
-data(LIN2006)
+data(LIN2003)
 # calculate potential surface solar radiation
-LIN2006[ , IncomingShortwavePotential := calc_PotRadiation_CosineResponsePower(doy = yday(Date),hour = Time/3600 + 0.5, latDeg = 52.21, longDeg = 14.122, timeZone = 0) ]
-LIN2006
-#plot(IncomingShortwave ~ IncomingShortwavePotential, data = LIN2006[month(Date) == 6 &  mday(Date) == 7, ], type = "l")
-
-plot(IncomingShortwave ~ IncomingShortwavePotential, data = LIN2006[month(Date) == 6, ], type = "p")
+LIN2003[ , IncomingShortwavePotential := calc_PotRadiation_CosineResponsePower(doy = yday(Date),hour = Time/3600 + 0.25, latDeg = 52.21, longDeg = 14.122, timeZone = 0) ]
+LIN2003
+plot(IncomingShortwave ~ IncomingShortwavePotential, data = LIN2003[month(Date) == 6, ], type = "p")
 }
 \references{
 Long and Ackerman 2000 JGR

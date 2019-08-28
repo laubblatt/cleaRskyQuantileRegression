@@ -40,13 +40,11 @@ calc_PotRadiation_CosineResponsePower <- function(doy,
   #' @param cosineResponsePower numeric defaults to 1.2, may be lower at high latitude sites, see Long and Ackerman 2000
   #' @return vector of potential solar radiation at the surface
   #' @examples
-  #' data(LIN2006)
+  #' data(LIN2003)
   #' # calculate potential surface solar radiation
-  #' LIN2006[ , IncomingShortwavePotential := calc_PotRadiation_CosineResponsePower(doy = yday(Date),hour = Time/3600 + 0.5, latDeg = 52.21, longDeg = 14.122, timeZone = 0) ]
-  #' LIN2006
-  #' #plot(IncomingShortwave ~ IncomingShortwavePotential, data = LIN2006[month(Date) == 6 &  mday(Date) == 7, ], type = "l")
-  #'
-  #' plot(IncomingShortwave ~ IncomingShortwavePotential, data = LIN2006[month(Date) == 6, ], type = "p")
+  #' LIN2003[ , IncomingShortwavePotential := calc_PotRadiation_CosineResponsePower(doy = yday(Date),hour = Time/3600 + 0.25, latDeg = 52.21, longDeg = 14.122, timeZone = 0) ]
+  #' LIN2003
+  #' plot(IncomingShortwave ~ IncomingShortwavePotential, data = LIN2003[month(Date) == 6, ], type = "p")
 
 
     # SolElev_rad.V.n <- fCalcSunPosition(DoY.V.n, Hour.V.n, Lat_deg.n,
@@ -121,12 +119,12 @@ SolElev_rad <- function(
   ## Set argument \code{isCorrectSolartime} to FALSE to use the given
   ## local winter time instead.
   #
-  ## this can throw an error when the length of longDeg and timZone differs 
+  ## this can throw an error when the length of longDeg and timZone differs
   # if (isCorrectSolartime & any(!is.finite(c(longDeg, timeZone)))) stop(
   #   "if isCorrectSolartime, one needs to provide finite longDeg and timeZone")
   # if (isCorrectSolartime & (any(!is.finite(longDeg)) | any(!is.finite(timeZone))) ) stop(
   #   "if isCorrectSolartime, one needs to provide finite longDeg and timeZone")
-  
+
       # Fractional year in radians
   fracYearInRad <- 2 * pi * (doy - 1) / 365.24
   # Solar time, corrected for local time and equation of time

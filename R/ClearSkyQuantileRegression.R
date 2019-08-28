@@ -25,24 +25,7 @@
 #'
 # https://stackoverflow.com/questions/15932585/multiple-functions-in-one-rd-file
 
-#' @examples
-#' data(LIN2006)
-#' # apply regression per month and with different windows
-#' (rqmw = LIN2006[ , calc_ClearSky_QuantileRegression_MonthlyTimeWindow(Date,Time,IncomingShortwave, tau = 0.85, lat = 52.21, lon = 14.122, hourshift = 0.5,timeZone = 0)])
-#'
-#' plot(IncomingShortwavePotential ~ month, data = rqmw, type = "l", col = 4, ylab = "Shortwave Radiation (W/m2)", ylim = c(0,500))
-#' lines(IncomingShortwaveClearSky ~ month, data = rqmw, type = "l", col =2)
-#' lines(IncomingShortwave ~ month, data = rqmw, type = "b")
-#' legend("topright", c("Potential", "Clear Sky flux", "Observed at surface"), col = c(4,2,1), lty = 1)
-#'
-#' # calculate potential surface solar radiation
-#'
-#' LIN2006[ , IncomingShortwavePotential := calc_PotRadiation_CosineResponsePower(doy = yday(Date),hour = Time/3600 + 0.5, latDeg = 52.21, longDeg = 14.122, timeZone = 0) ]
-#' LIN2006
-#' #plot(IncomingShortwave ~ IncomingShortwavePotential, data = LIN2006[month(Date) == 6 &  mday(Date) == 7, ], type = "l")
-#'
-#' plot(IncomingShortwave ~ IncomingShortwavePotential, data = LIN2006[month(Date) == 6, ], type = "p")
-#'
+
 
 NULL
 
@@ -123,11 +106,11 @@ calc_ClearSky_QuantileRegression_MonthlyTimeWindow = function(Date, Time, Incomi
   #'
   #' @author Maik Renner, mrenner [at] bgc-jena.mpg.de
   #' @examples
-  #' data(LIN2006)
+  #' data(LIN2003)
   #' # apply regression per month and with different windows
   #' # Check available cores to parallize the task with setting mc.cores larger than 1
   #' detectCores()
-  #' (rqmw = LIN2006[ , calc_ClearSky_QuantileRegression_MonthlyTimeWindow(Date,Time,IncomingShortwave, tau = 0.85, lat = 52.21, lon = 14.122, hourshift = 0.5,timeZone = 0, mc.cores = 1)])
+  #' (rqmw = LIN2003[ , calc_ClearSky_QuantileRegression_MonthlyTimeWindow(Date,Time,IncomingShortwave, tau = 0.85, lat = 52.21, lon = 14.122, hourshift = 0.5,timeZone = 0, mc.cores = 1)])
   #'
   #' plot(IncomingShortwavePotential ~ month, data = rqmw, type = "l", col = 4, ylab = "Shortwave Radiation (W/m2)", ylim = c(0,500))
   #' lines(IncomingShortwaveClearSky ~ month, data = rqmw, type = "l", col =2)
@@ -257,7 +240,7 @@ rq7mon = rbindlist(results7mon,fill = TRUE)[ , Window := "7mon"]
   dtyrmon[ , IncomingShortwaveClearSky :=   ftau * IncomingShortwavePotential][]
 
   if (briefoutput == TRUE) {
-    dtyrmon = dtyrmon[!is.an(Window) , .(year,month,IncomingShortwave,IncomingShortwavePotential,ftau,IncomingShortwaveClearSky,Window,tau)]
+    dtyrmon = dtyrmon[!is.na(Window) , .(year,month,IncomingShortwave,IncomingShortwavePotential,ftau,IncomingShortwaveClearSky,Window,tau)]
   }
   return(dtyrmon)
 }
@@ -291,6 +274,38 @@ aggregate2yrmon = function(dth = NULL, Date = NULL, Time = NULL, IncomingShortwa
 }
 
 # dt30[SiteCode == "LIN" & year(Date) == 1997 , Aggregate2yrmon(dth = NULL, Date,Time,IncomingShortwave,IncomingLongwave)]
+
+
+#' #' @export
+#' meann <- function(x,nmin,...) {
+#'   #' an average mean which requires a minimum of data points nmin
+#'
+#'   #'  needed if missing data is missing :)
+#'   #' @param x vector of numeric values
+#'   #' @param nmin minimum of data points accepted to calculate the mean (integer)
+#'   #' @param ... further arguments to mean() remember especially to set na.rm=TRUE
+#'   #' @version 20141208 add non-missing data lower nmin
+#'   #' @author Maik Renner mrenner [at] bgc-jena.mpg.de
+#'   #' @examples
+#'   #' x = 1:10
+#'   #' meann(x,nmin = 11)
+#'   #' meann(NULL,nmin = 11)
+#'   #' x = c(1,2,NA,Inf,NaN)
+#'   #' meann(x,2,na.rm=TRUE)
+#'   #' x = c(1,2,NA,NA,NaN)
+#'   #' meann(x,2,na.rm=TRUE)
+#'   #' meann(x,3,na.rm=TRUE)
+#'   #' sum(!is.na(x))
+#'
+#'   # http://stackoverflow.com/questions/12125364/why-does-median-trip-up-data-table-integer-versus-double
+#'
+#'   n = length(x)
+#'   nnona = sum(!is.na(x))
+#'   if (n < nmin | nnona < nmin) out = NA
+#'   else out = mean(x,...)
+#'   return(as.double(out))  ### data.table needs consitent output ... for data allocation
+#' }
+
 
 
 calc_ClearSkyQuantileRegressionMonthly = function(Date, Time, IncomingShortwave, IncomingShortwavePotential = NULL, tau = tau,
