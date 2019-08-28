@@ -22,7 +22,7 @@ The method is intended for observational sites where no data on diffuse and dire
 The package also provide functions to calculate the potential shortwave radiation at the surface, i.e without any clouds and aerosols. Therefore Location (lat,lon) and Date and Time are required. The function is based on an code of the *R* packages REddyProc and solartime maintained by Thomas Wutzler (MPI-BGC)
 
 ## Public release:
-[![DOI](https://zenodo.org/badge/157406288.svg)](https://zenodo.org/badge/latestdoi/157406288)
+[![DOI](https://zenodo.org/badge/204692274.svg)](https://zenodo.org/badge/latestdoi/204692274)
 
 ## Instructions    
 ### To install the R package use:
