@@ -57,7 +57,7 @@ dat[ , Rsdpot_12 := calc_PotRadiation_CosineResponsePower(doy = yday(Date), hour
 
 ### Apply Qunatile regression and plot for one month 
 ```R
-library(lattice)
+library(latticeExtra)
 lab_Rsdpot12_name = expression(bold("Potential Shortwave Radiation ")(W*m^-2))
 lab_Rsd      = expression(bold("Observed Shortwave Radiation ")(W*m^-2))
 xyplot(IncomingShortwave ~  Rsdpot_12, data = dat,
