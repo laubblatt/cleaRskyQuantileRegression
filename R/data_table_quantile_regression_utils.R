@@ -9,6 +9,8 @@
 #' @version 1.10 2018-12-14 BUG fix for R1
 #' @version 1.11 2018-12-14 add a function which rolls up summary objects as nested lists mrq.output.sufi()
 #' @version 1.20 2019-08-26 copied three function definitions from my package phaselag to be independent from it
+#' @version 1.21 2019-11-26 winter nighttime regression yielded an error in functions mlm.output.statlong.call.rq and mrq.output.statlong 
+#'                          when regression failed the tau was missing in the output data.tables 
 
 #' @import data.table
 #' @import quantreg
@@ -39,7 +41,10 @@ mlm.output.statlong.call.rq = function(mula, data, se = "iid", ...) {
     #     print(paste(mula, "combi no data", collapse = " "))
     ### some non null output for groups is still required !
     # otherwise j doesn't evaluate to the same number of columns for each group
-    data.table(statistic = NA_character_, value = NA_real_)
+    #' @update 2019-11-26 incase of polar month with Radiation being 0, we get the error in rq.fit.br(x, y, tau = tau, ...) : Singular design matrix
+    #'                    for the output this requires a further column for tau, which I just set to NA
+#    data.table(statistic = NA_character_, value = NA_real_)
+    data.table(tau = NA_real_, statistic = NA_character_, value = NA_real_)
 
   } else if (any(is.na(coef(ans)))) {
     data.table(statistic = NA_character_, value = NA_real_)
@@ -156,8 +161,11 @@ mrq.output.statlong = function(fit, se = "iid") {
       (out = as.numeric(t(sufic)))
       if (coefnames[1] == "(Intercept)")
         (coefnames = c("intercept", paste0("slope",1:(length(out)-1))) )
-
-      names(out) = coefnames
+      
+      #' @update 2019-11-26 winter nighttime regression yielded an error 
+      #' Error in model.frame.default(formula = ord.resid ~ xt, drop.unused.levels = TRUE) : 
+      #'       variable lengths differ (found for 'xt')
+      out = data.table(tau = fit$tau, statistic = coefnames, value = out)
 
     } else {
 
